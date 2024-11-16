@@ -18,10 +18,11 @@ import com.example.quickcards.ui.theme.QuickCardsTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.TextField
 
-// Data class to hold the term and value of the flashcard
+// Data class that holds the term and definition of a flashcard
 data class Flashcard(val term: String, val value: String)
 
 class MainActivity : ComponentActivity() {
+    // list of cards and a message that is displayed below the options set to default here
     private val cards = mutableStateOf(listOf<Flashcard>())
     private val message = mutableStateOf("No Cards Created.")
 
@@ -29,20 +30,22 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            // main column for app
             QuickCardsTheme {
                 Column(modifier = Modifier.padding(16.dp)) {
                     // Static message at the top
                     Text(
                         text = "Select any option below:",
-                        modifier = Modifier.padding(top = 16.dp) // Padding below the static message
+                        modifier = Modifier.padding(top = 16.dp) // Padding in order to be on phone notification bar
                     )
 
-                    // State to track if Add Card or Remove Card button has been clicked
+                    // States to track if Add Card or Remove Card button has been clicked
+                    // 3rd State to set cards to invisible if user is testing
                     val isAddCardClicked = remember { mutableStateOf(false) }
                     val isRemoveCardClicked = remember { mutableStateOf(false) }
                     val displayCards = remember { mutableStateOf(true) }
 
-                    // State to hold the term and value for Add/Remove operations
+                    // States to hold the term and value for Add/Remove operations
                     val term = remember { mutableStateOf("") }
                     val value = remember { mutableStateOf("") }
 
@@ -113,6 +116,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier.padding(bottom = 8.dp)
                         )
 
+                        // Submit button for removign a card
                         Button(
                             onClick = {
                                 removeCard(term.value)
@@ -129,6 +133,7 @@ class MainActivity : ComponentActivity() {
                         }
                     }
 
+                    // Values used for testing and shuffling
                     val isTestMode = remember { mutableStateOf(false) }
                     val shuffledCards = remember { mutableStateOf(emptyList<Flashcard>()) }
                     val currentCardIndex = remember { mutableStateOf(0) }
@@ -217,6 +222,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+// Test function to randomly select card and display
 @Composable
 fun TestMode(
     shuffledCards: List<Flashcard>,
